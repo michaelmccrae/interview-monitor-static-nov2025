@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import data from "./lib/data/goldman.json";
+import data from "../../lib/data/goldman.json";
 import Display from './display'
 
 export default function SimulatedDeepgramFeed({ intervalMs = 30 }) {
@@ -12,7 +12,7 @@ export default function SimulatedDeepgramFeed({ intervalMs = 30 }) {
   const timerRef = useRef(null);
   const startedRef = useRef(false);
 
-  // NEW: Track which turn we already sent to /api/error6a + /api/lookup6a
+  // NEW: Track which turn we already sent to /api/error + /api/lookup
   const lastProcessedTurn = useRef(-1);
 
   // -----------------------------
@@ -103,7 +103,7 @@ export default function SimulatedDeepgramFeed({ intervalMs = 30 }) {
   }, [mergedDG]);
 
   // ====================================================
-  // RUN SPEAKERNAME6A + SPEAKERROLE6A WHEN 4 TURNS READY
+  // RUN SPEAKERNAME + SPEAKERROLE WHEN 4 TURNS READY
   // ====================================================
   useEffect(() => {
     if (beforeLLM.length < 4) return;
@@ -116,8 +116,8 @@ export default function SimulatedDeepgramFeed({ intervalMs = 30 }) {
       console.log("📤 Sending speaker context:", contextSlice);
 
       const tasks = [
-        { key: "speakername", url: "/api/speakername6a" },
-        { key: "speakerrole", url: "/api/speakerrole6a" }
+        { key: "speakername", url: "/api/speakername" },
+        { key: "speakerrole", url: "/api/speakerrole" }
       ];
 
       const calls = tasks.map(async (task) => {
@@ -171,8 +171,8 @@ useEffect(() => {
     console.log("📤 Processing completed turn:", completedTurn);
 
     const tasks = [
-      { key: "lookup", url: "/api/lookup6a" },
-      { key: "error", url: "/api/error6a" },
+      { key: "lookup", url: "/api/lookup" },
+      { key: "error", url: "/api/error" },
       { key: "followup", url: "/api/followup6a" }
     ];
 
